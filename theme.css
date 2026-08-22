@@ -1,0 +1,313 @@
+/* OsteoGuard AI theme — clinical green / blue / white, light only.
+   Loaded by app.py. Animations are deliberately small and short,
+   and are switched off entirely for prefers-reduced-motion users. */
+
+:root{
+  --blue-800:#075985; --blue-700:#0369a1; --blue-600:#0284c7; --blue-400:#38bdf8;
+  --blue-100:#dcf0fb; --blue-50:#eff9fe;
+  --green-700:#047857; --green-600:#059669; --green-500:#10b981; --green-400:#34d399;
+  --green-100:#d5f5e6; --green-50:#f0fdf6;
+  --ink:#0f3d56; --body:#3d6479; --muted:#6b8fa3;
+  --line:#dbeef6; --card:#ffffff;
+  --shadow:0 1px 2px rgba(15,61,86,.05), 0 6px 18px rgba(15,61,86,.05);
+  --shadow-lift:0 2px 4px rgba(15,61,86,.06), 0 14px 32px rgba(15,61,86,.10);
+}
+
+/* ---------------- motion ---------------- */
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 rgba(16,185,129,.5)}
+  70%{box-shadow:0 0 0 9px rgba(16,185,129,0)}
+  100%{box-shadow:0 0 0 0 rgba(16,185,129,0)}
+}
+@keyframes sweep{0%{background-position:-180% 0}100%{background-position:180% 0}}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+/* ---------------- canvas ---------------- */
+.stApp{
+  background:linear-gradient(170deg,#f4fbfe 0%,#eef8fb 45%,#f1fdf7 100%);
+  background-attachment:fixed;
+  color:var(--body);
+}
+.block-container{padding-top:1.7rem;padding-bottom:2.5rem;max-width:1480px}
+#MainMenu, footer, [data-testid="stDecoration"]{visibility:hidden}
+h1,h2,h3,h4,h5{color:var(--ink)}
+a{color:var(--blue-700)}
+
+/* ---------------- cards ----------------
+   A card is any bordered container whose first element is a .card-h heading,
+   which is exactly what the card() helper in app.py emits. Targeting
+   the heading rather than a Streamlit internal class keeps this stable across
+   Streamlit versions; without :has() support the container simply falls back
+   to Streamlit's own plain border. */
+[data-testid="stVerticalBlock"]:has(> [data-testid="stElementContainer"]:first-child .card-h){
+  background:var(--card);
+  border:1px solid var(--line)!important;
+  border-radius:16px!important;
+  padding:18px 20px!important;
+  box-shadow:var(--shadow);
+  transition:transform .25s cubic-bezier(.2,.8,.25,1), box-shadow .25s ease, border-color .25s ease;
+  animation:rise .5s cubic-bezier(.2,.8,.25,1) both;
+}
+[data-testid="stVerticalBlock"]:has(> [data-testid="stElementContainer"]:first-child .card-h):hover{
+  transform:translateY(-3px);
+  box-shadow:var(--shadow-lift);
+  border-color:#bde3f2!important;
+}
+.card-h{display:flex;align-items:center;gap:10px;margin:0 0 12px}
+.card-h .ico{
+  width:32px;height:32px;border-radius:10px;display:grid;place-items:center;flex:none;
+  background:linear-gradient(135deg,var(--blue-50),var(--green-50));
+  border:1px solid var(--line);font-size:1rem;
+  transition:transform .3s cubic-bezier(.2,.8,.25,1);
+}
+[data-testid="stVerticalBlock"]:has(> [data-testid="stElementContainer"]:first-child .card-h):hover .card-h .ico{transform:scale(1.1) rotate(-5deg)}
+.card-h .t{font-size:.97rem;font-weight:700;color:var(--ink);letter-spacing:.2px}
+
+/* ---------------- hero ---------------- */
+.hero{
+  position:relative;overflow:hidden;border-radius:18px;border:1px solid var(--line);
+  background:linear-gradient(120deg,var(--blue-50) 0%,#ffffff 48%,var(--green-50) 100%);
+  padding:22px 26px;margin-bottom:18px;
+  animation:rise .55s cubic-bezier(.2,.8,.25,1) both;
+}
+.hero:after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(100deg,transparent 20%,rgba(255,255,255,.6) 50%,transparent 80%);
+  background-size:200% 100%;animation:sweep 7s ease-in-out infinite;
+}
+.hero .h{font-size:2.05rem;font-weight:800;color:var(--ink);letter-spacing:-.5px;line-height:1.15}
+.hero .s{margin-top:7px;color:var(--muted);font-size:.96rem;max-width:74ch;line-height:1.5}
+.chips{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.chip{
+  display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);
+  border-radius:999px;padding:6px 14px;font-size:.82rem;font-weight:600;color:var(--body);
+  transition:transform .2s ease,border-color .2s ease;
+}
+.chip:hover{transform:translateY(-2px);border-color:var(--green-400)}
+.dot{
+  width:8px;height:8px;border-radius:50%;background:var(--green-500);flex:none;
+  animation:pulse 2.2s infinite;
+}
+
+/* ---------------- sidebar ---------------- */
+section[data-testid="stSidebar"]{background:#fff;border-right:1px solid var(--line)}
+section[data-testid="stSidebar"] .block-container{padding-top:1.2rem}
+.brand{display:flex;align-items:center;gap:11px;margin-bottom:16px}
+.brand-logo{
+  width:44px;height:44px;border-radius:14px;flex:none;display:grid;place-items:center;
+  font-size:1.35rem;
+  background:linear-gradient(135deg,var(--blue-600),var(--green-500));
+  box-shadow:0 6px 16px rgba(5,150,105,.28);
+  animation:floaty 4.5s ease-in-out infinite;
+}
+.brand-name{font-size:1.2rem;font-weight:800;color:var(--ink);line-height:1.1}
+.brand-tag{font-size:.75rem;color:var(--muted);line-height:1.3;margin-top:2px}
+.side-quote{
+  font-style:italic;color:var(--muted);font-size:.9rem;line-height:1.55;
+  padding:12px 14px;border-radius:12px;border-left:3px solid var(--green-400);
+  background:linear-gradient(120deg,var(--green-50),var(--blue-50));
+}
+section[data-testid="stSidebar"] .stButton>button{
+  width:100%;justify-content:flex-start;text-align:left;border:none;background:transparent;
+  color:var(--body);font-weight:600;font-size:.94rem;padding:.55rem .8rem;box-shadow:none;
+}
+section[data-testid="stSidebar"] .stButton>button:hover{
+  background:var(--blue-50);color:var(--blue-700);transform:translateX(3px);box-shadow:none;
+}
+section[data-testid="stSidebar"] .stButton>button[kind="primary"]{
+  background:linear-gradient(90deg,var(--blue-50),var(--green-50));
+  color:var(--blue-800);box-shadow:inset 3px 0 0 var(--green-500);
+}
+
+/* ---------------- buttons ---------------- */
+.stButton>button{
+  border-radius:11px;font-weight:600;background:#fff;color:var(--body);
+  border:1px solid var(--line);
+  transition:transform .2s cubic-bezier(.2,.8,.25,1),box-shadow .2s ease,
+             border-color .2s ease,color .2s ease;
+}
+.stButton>button:hover{
+  border-color:var(--blue-400);color:var(--blue-700);transform:translateY(-2px);
+  box-shadow:0 8px 18px rgba(2,132,199,.13);
+}
+.stButton>button:active{transform:translateY(0)}
+.stButton>button[kind="primary"], .stDownloadButton>button{
+  background:linear-gradient(120deg,var(--blue-600) 0%,var(--green-600) 100%);
+  background-size:170% 100%;border:none;color:#fff;
+}
+.stButton>button[kind="primary"]:hover, .stDownloadButton>button:hover{
+  background-position:100% 0;color:#fff;transform:translateY(-2px);
+  box-shadow:0 12px 26px rgba(5,150,105,.28);
+}
+.stDownloadButton>button{border-radius:11px;font-weight:600;transition:all .2s ease}
+
+/* ---------------- bidirectional text ----------------
+   `unicode-bidi: plaintext` sets each paragraph's direction from its own first
+   strong character, exactly as dir="auto" would. Arabic therefore starts at the
+   right and English is untouched, with no language detection in Python and no
+   per-widget markup that a Streamlit rerun could drop. */
+.stTextArea textarea, .stTextInput input{
+  unicode-bidi:plaintext; text-align:start;
+}
+[data-testid="stMarkdownContainer"] p,
+[data-testid="stMarkdownContainer"] li,
+[data-testid="stMarkdownContainer"] h1,
+[data-testid="stMarkdownContainer"] h2,
+[data-testid="stMarkdownContainer"] h3,
+[data-testid="stMarkdownContainer"] h4,
+[data-testid="stMarkdownContainer"] blockquote{
+  unicode-bidi:plaintext; text-align:start;
+}
+/* Whole blocks of Arabic - a summary or an answer - are flipped outright, so
+   list bullets and headings sit on the right as well. The application emits an
+   .rtl-mark marker immediately before such a block; CSS cannot detect the
+   script itself. */
+[data-testid="stElementContainer"]:has(.rtl-mark)
+  + [data-testid="stElementContainer"]{direction:rtl; text-align:right}
+.rtl-mark{display:none}
+
+/* ---------------- inputs ---------------- */
+.stTextArea textarea, .stTextInput input, .stNumberInput input{
+  border-radius:11px!important;border-color:var(--line)!important;
+  background:#fcfeff!important;color:var(--ink)!important;
+  transition:border-color .2s ease,box-shadow .2s ease;
+}
+.stTextArea textarea:focus, .stTextInput input:focus, .stNumberInput input:focus{
+  border-color:var(--green-400)!important;
+  box-shadow:0 0 0 3px rgba(52,211,153,.18)!important;
+}
+[data-testid="stFileUploaderDropzone"]{
+  background:linear-gradient(120deg,var(--blue-50),var(--green-50));
+  border:1.5px dashed #a9d9ec;border-radius:13px;
+  transition:border-color .25s ease,transform .25s ease;
+}
+[data-testid="stFileUploaderDropzone"]:hover{border-color:var(--green-500);transform:translateY(-1px)}
+
+/* ---------------- expanders ---------------- */
+[data-testid="stExpander"]{
+  border:1px solid var(--line);border-radius:12px;background:#fff;margin-bottom:8px;
+  transition:border-color .2s ease,box-shadow .2s ease;
+}
+[data-testid="stExpander"]:hover{border-color:#bde3f2;box-shadow:0 6px 16px rgba(15,61,86,.07)}
+[data-testid="stExpander"] summary{font-weight:600;color:var(--ink)}
+
+/* ---------------- rows, pills, bars ---------------- */
+.row{
+  display:flex;justify-content:space-between;align-items:center;padding:9px 0;
+  border-bottom:1px solid #eef7fa;font-size:.9rem;
+}
+.row:last-child{border-bottom:none}
+.row .k{color:var(--muted)}
+.row .v{font-weight:600;color:var(--ink)}
+
+.pill{padding:4px 13px;border-radius:999px;font-size:.81rem;font-weight:600;display:inline-block}
+.pill-green{background:var(--green-100);color:var(--green-700)}
+.pill-blue{background:var(--blue-100);color:var(--blue-800)}
+.pill-amber{background:#fef3c7;color:#a16207}
+.pill-red{background:#fee2e2;color:#b91c1c}
+.pill-grey{background:#eef4f7;color:var(--body)}
+
+.bar-bg{background:#eaf4f8;border-radius:999px;height:9px;width:100%;overflow:hidden}
+.bar-fill{
+  height:9px;border-radius:999px;transform-origin:left;
+  animation:grow .9s cubic-bezier(.2,.8,.25,1) both;
+}
+.risk{display:grid;grid-template-columns:1.1fr 1.4fr .6fr;align-items:center;gap:10px;padding:9px 0}
+.risk .n{color:var(--muted);font-size:.87rem}
+.risk .l{text-align:right;font-weight:600;font-size:.85rem}
+
+/* ---------------- blocks ---------------- */
+.note-blue{
+  background:var(--blue-50);border:1px solid var(--blue-100);border-radius:12px;
+  padding:13px 15px;color:var(--blue-800);font-size:.87rem;line-height:1.5;
+}
+.note-green{
+  background:var(--green-50);border:1px solid var(--green-100);border-radius:12px;
+  padding:13px 15px;color:var(--green-700);font-size:.87rem;line-height:1.5;
+}
+.note-amber{
+  background:#fffbeb;border:1px solid #fde68a;border-left:4px solid #f59e0b;
+  border-radius:11px;padding:12px 15px;color:#92400e;font-size:.86rem;line-height:1.5;
+}
+.checklist{
+  background:var(--green-50);border:1px solid var(--green-100);border-radius:12px;padding:13px 15px;
+}
+
+/* Red-flag alert. The one place in the interface allowed to shout, so it does
+   not share the muted clinical palette. */
+@keyframes alert-in{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.alert-red{
+  background:#fff5f5;border:1px solid #fca5a5;border-left:5px solid #dc2626;
+  border-radius:12px;padding:16px 18px;margin-bottom:14px;
+  animation:alert-in .35s ease both;
+}
+.alert-red .t{
+  display:flex;align-items:center;gap:9px;
+  font-size:1.02rem;font-weight:800;color:#b91c1c;margin-bottom:6px;
+}
+.alert-red .b{color:#7f1d1d;font-size:.89rem;line-height:1.55}
+.flag{
+  display:flex;gap:10px;align-items:flex-start;
+  background:#fff;border:1px solid #fecaca;border-radius:9px;
+  padding:9px 12px;margin-top:8px;
+}
+.flag .n{font-weight:700;color:#b91c1c;font-size:.88rem}
+.flag .q{color:#7f1d1d;font-size:.82rem;font-style:italic;margin-top:2px}
+.flag .src{
+  margin-left:auto;flex:none;font-size:.72rem;font-weight:600;color:#9a3412;
+  background:#ffedd5;border-radius:999px;padding:2px 9px;height:fit-content;
+}
+
+/* Video suggestion links */
+.vid{
+  display:flex;align-items:center;gap:10px;padding:10px 13px;margin-bottom:7px;
+  background:#fff;border:1px solid var(--line);border-radius:10px;
+  text-decoration:none;color:var(--ink);font-size:.89rem;font-weight:600;
+  transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease;
+}
+.vid:hover{
+  transform:translateX(3px);border-color:var(--green-400);
+  box-shadow:0 6px 14px rgba(5,150,105,.12);color:var(--green-700);
+}
+.vid .play{
+  flex:none;width:26px;height:26px;border-radius:7px;display:grid;place-items:center;
+  background:#fee2e2;color:#dc2626;font-size:.7rem;
+}
+.rec{
+  display:flex;justify-content:space-between;align-items:center;gap:10px;
+  padding:11px 13px;border:1px solid var(--line);border-radius:10px;
+  background:#fff;margin-bottom:8px;
+}
+.rec .who{font-weight:700;color:var(--ink);font-size:.92rem}
+.rec .when{color:var(--muted);font-size:.78rem;margin-top:2px}
+.check{
+  display:flex;gap:10px;align-items:flex-start;padding:6px 0;color:var(--green-700);
+  font-size:.89rem;line-height:1.45;animation:fade .5s both;
+}
+.check .tick{color:var(--green-500);font-weight:800;flex:none}
+.empty{
+  min-height:150px;display:flex;align-items:center;justify-content:center;text-align:center;
+  background:linear-gradient(120deg,var(--blue-50),var(--green-50));
+  border:1.5px dashed #b9e0ef;border-radius:13px;color:var(--muted);
+  font-size:.87rem;padding:16px;line-height:1.55;
+}
+.stat{
+  background:linear-gradient(140deg,#fff,var(--blue-50));border:1px solid var(--line);
+  border-radius:13px;padding:14px 16px;height:100%;transition:transform .25s ease;
+}
+.stat:hover{transform:translateY(-2px)}
+.stat .t{color:var(--muted);font-size:.8rem;margin-bottom:4px}
+.stat .v{font-size:1.7rem;font-weight:800;color:var(--ink);line-height:1.1}
+.stat .c{color:var(--muted);font-size:.76rem;margin-top:3px}
+
+.footer-bar{
+  color:var(--muted);font-size:.83rem;padding-top:12px;border-top:1px solid var(--line);
+  margin-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;
+}
+
+@media (prefers-reduced-motion: reduce){
+  *,*:before,*:after{animation:none!important;transition:none!important}
+}

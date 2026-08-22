@@ -1,0 +1,21 @@
+# Pinned to the light clinical palette. Without base = "light" Streamlit
+# follows the operating system, so a machine in dark mode would render the
+# widgets dark underneath the theme in theme.css.
+
+[theme]
+base = "light"
+primaryColor = "#059669"
+backgroundColor = "#ffffff"
+secondaryBackgroundColor = "#f0fdf6"
+textColor = "#0f3d56"
+linkColor = "#0369a1"
+borderColor = "#dbeef6"
+codeBackgroundColor = "#eff9fe"
+font = "sans-serif"
+
+[client]
+toolbarMode = "minimal"
+showErrorDetails = true
+
+[browser]
+gatherUsageStats = false
